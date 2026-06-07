@@ -46,9 +46,30 @@ Undergrad housing experiences at Boston University. Boston University’s campus
 
 **Chunk size:**
 
+Source: RateMyDorm
+Sentence-aware splitting, capped at 150-175 words per chunk. Reviews are atomic and pertain to a specific dormitory, so a single review will rarely exceed this cap. Where a review does exceed it, the splitter completes the current sentence before starting a new chunk, preserving the integrity of each thought. A dorm name and star rating are prepended to each chunk before embedding. Reviews are grouped by dorm name in the source document.
+
+Source: GuideToBu Wiki
+1 section per chunk, using sentence-aware splitting with a 150-175 word cap enforced greedily within each section. Wiki pages are divided cleanly into subsections containing focused prose on the section subject. The splitter packs sentences into a chunk until the next sentence would exceed the cap, then starts a new chunk. A heading path for page, section, subsection is prepended to each chunk before embedding.
+
+Source: Reddit
+Sentence-aware splitting, capped at 150-175 words per chunk, minimum 100 characters. While most comments fall within the cap naturally, longer comments, particularly structured replies covering multiple dorms, can exceed it. The splitter completes the current sentence before starting a new chunk, ensuring no opinion is cut mid-thought. The thread title is prepended to every chunk before embedding, since comments do not carry their own topic signal. The minimum character count guards against short replies that contain no meaningful content such as "agreed" or "this."
+
+
 **Overlap:**
 
+Source: RateMyDorm
+None required between chunks. Sentence-aware splitting ensures no chunk ends mid-thought, so overlap is not needed to preserve meaning across boundaries.
+
+Source: GuideToBu Wiki
+None required between chunks. As with RateMyDorm, sentence-aware splitting guarantees clean boundaries. Section headers serve as the top-level boundary and are never split across chunks.
+
+Source: Reddit
+None required between chunks. Sentence-aware splitting ensures clean boundaries. The thread title prepended to every chunk preserves topic context across splits of the same comment.
+
 **Reasoning:**
+
+A hybrid approach is warranted because the three source types differ fundamentally in structure, authorial voice, and information density. A single chunk size would either fragment review content or under-split narrative prose. Sentence-aware splitting is applied uniformly across all three sources. The primary motivation is the 256 token limit of all-MiniLM-L6-v2, which silently truncates input beyond that threshold. A 150-175 word cap per chunk provides headroom for prepended metadata prefixes while staying within the model's limit. Splitting on sentence boundaries rather than raw character or word counts ensures no chunk ends mid-thought, preserving the integrity of each opinion or prose passage. Context like dorm name, star rating, heading path, or thread title must travel with the chunk as text to be semantically retrievable, not just filterable. Where a comment, review, or wiki section is split into multiple chunks, the prepended metadata prefix on each chunk preserves the topic context that a mid-content split would otherwise orphan. This makes the metadata prefix load-bearing for split chunks, not merely a convenience for single-chunk documents.
 
 ---
 
@@ -60,11 +81,23 @@ Undergrad housing experiences at Boston University. Boston University’s campus
      would you weigh in choosing a different embedding model — context length, multilingual
      support, accuracy on domain-specific text, latency? -->
 
-**Embedding model:**
+**Embedding model: `all-MiniLM-L6-v2`**
 
-**Top-k:**
+A lightweight sentence-transformers model that runs locally with no API key or rate limits. It maps text to 384-dimensional vectors, with good performance on short to medium passages. Tradeoffs accepted: 
+- Lower accuracy than larger models (e.g., OpenAI's `text-embedding-3-large`), but no cost and no latency from network calls.
+- Compressed representation of meaning, but narrow domain means core content meaning should be preserved.
+
+**Top-k: 5**
+
+Given the diversity of document sources, it may be worth expanding to 8-10 if source diversity is limited.
 
 **Production tradeoff reflection:**
+
+- Embedding quality: a larger model would likely handle semantic nuances of a review to review closely related but ultimately distinct embeddings.
+- Multilingual support: BU has a huge number of international students. Injesting feedback on student housing in different languages would add to the diversity of perspectives to the corpus.
+- Domain expertise: a model tuned to have a greater understanding of BU housing slang and abbreviations would make more useful embeddings.
+- Context length: I would consider opting for a model with a larger context window if I implemented conversation history. This could be a usefule feature as a student could reasonably wish to describe their needs and priorities and query the tool with that context maintained. This could get large as each retrieved chunk is included with the conversation history at each turn. I would also consider expanding top-k to ensure source diversity, which could fill up the context window pre-prompt.
+- Re-ranking: For more accurate results, retrieve a higher top-k and then rerank results and only pass top 5 ranked results to the LLM.
 
 ---
 
@@ -77,11 +110,11 @@ Undergrad housing experiences at Boston University. Boston University’s campus
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 | How big are the beds in Warren Towers? | Twin XL bed (80 inches -- bring extra-long twin sheets) |
+| 2 | What are the room options for Stuvi2? | Stuvi2 offers single, double, and triple room configurations. |
+| 3 | What do students say about living in West campus and taking classes at CAS? | Students consistently say that the walk from West campus for classes in CAS is long and crowded. |
+| 4 | What's the guest policy at Stuvi2?  | The system should acknowledge that it doesn't have the information, as it's an official policy not present in these community docs. |
+| 5 | What's the standout feature of living at Fenway? | Students consistently praise the quality of the dining hall, despite the distance to west campus. |
 
 ---
 
@@ -91,9 +124,9 @@ Undergrad housing experiences at Boston University. Boston University’s campus
      Consider: noisy or inconsistent documents, missing source attribution, off-topic
      retrieval, chunks that split key information across boundaries. -->
 
-1.
+1. Given the breadth of BU housing, many dorms share the same street name, but with a different number address. Students often have their own names for these residences, so comments talking about the same place might not register as related.
 
-2.
+2. Reddit and RateMyDorm will likely dominate the number of chunks in the database. This might result in top k not surfacing relevant information from the GuideToBU Wiki as it more frequently pulls from the other two sources. Users might miss out on the valuable content offered by the GuideToBU Wiki.
 
 ---
 
@@ -104,6 +137,36 @@ Undergrad housing experiences at Boston University. Boston University’s campus
      Label each stage with the tool or library you're using.
      You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
      You'll use this diagram as context when prompting AI tools to implement each stage. -->
+
+```
+User query
+    │
+    ▼
+[1] INGEST          ──► Extract html from sources, clean html tags to produce txt file.
+    extract.py
+    clean.py
+    │
+    ▼
+[2] CHUNK          ──► Sentance-aware splitting per source type.
+    chunk.py           Metadata prepended to each chunk before embedding.
+    │
+    ▼
+[3] EMBED + STORE   ──► Embed chunks into vector store.
+    embed.py            Embedding model: `all-MiniLM-L6-v2` | Vector Store: `ChromaDB`
+    │
+    ▼
+
+[4] RETRIEVE        ──► Query is embedded and matched against stored chunks
+    retriever.py        Embedding model: `all-MiniLM-L6-v2` | Vector Store: `ChromaDB`
+    │
+    ▼
+[5] GENERATE        ──► Retrieved chunks are passed as context to an LLM, which produces a grounded, cited answer
+    generator.py        LLM: Groq `llama-3.3-70b-versatile`
+    │
+    ▼
+[6] UI              ──► Gradio chat interface serves the response to the user
+    app.py
+```
 
 ---
 
@@ -121,6 +184,20 @@ Undergrad housing experiences at Boston University. Boston University’s campus
 
 **Milestone 3 — Ingestion and chunking:**
 
+I'll give Claude my set of source documents saved as raw HTML, the architecture section, and an annotated example of each source's HTML with boilerplate regions marked. I'll ask it to implement `clean_reddit()`, `clean_rmd()` and `clean_guide()` to remove boilerplate, extract metadata, and translate tags to structural text markers. I will review each source's HTML and identify the relevant sections of the HTML should be preserved, and which should be stripped. I will manually inspect the cleaned output for each source type against the raw HTML to verify that boilerplate has been removed, structural markers are preserved, and metadata fields like ratings and heading paths have been correctly extracted.
+
+I'll give Claude my chunking strategy section, the normalized chunk dict schema, and an example of cleaned output from each source type. I'll give Claude my chunking strategy section and ask it to implement `chunk_reddit()`, `chunk_rmd()`, and `chunk_guide()` with my specified source-specific sentance-splitting strategy, minimum character count, and maximum word counts. I'll manually inspect 5 chunks per source type to verify the metadata prefix is correctly prepended, dorm names are normalized, and no boilerplate text survived cleaning.
+
 **Milestone 4 — Embedding and retrieval:**
 
+I'll give Claude my chunk functions, the normalized dict schema, and the architecture section. I'll ask it to implement `embed_and_store()` to embed each chunk's text field using all-MiniLM-L6-v2 and store the resulting vector alongside the chunk metadata in ChromaDB. I'll verify by checking ChromaDB's stored count matches my total chunk count, and spot-checking that stored metadata fields match the source chunks.
+
+I'll give Claude my embed_and_store() implementation and the architecture section. I'll ask it to implement `retrieve()` to encode the user query using the same embedding model, query ChromaDB for the top k most similar chunks, and return results including chunk text, metadata, and distance scores. 
+
+I'll give Claude my `retrieve()` function and the normalized dict schema. I'll ask it to write 5-10 unit tests covering distance score ranges, chunk content validity, metadata field presence and accuracy, and correct behavior when the collection is empty.
+
 **Milestone 5 — Generation and interface:**
+
+I'll give Claude my `retrieve()` implementation, the architecture section, and my Groq API credentials. I'll ask it to implement `generate()` that takes the user query and retrieved chunks, constructs a prompt instructing the LLM to answer using only the provided context and cite sources by dorm name and source type, and calls the Groq API.
+
+I'll give Claude my `generate()` function and ask it to implement a Gradio interface displays the user query, generated answer, and source citations for each response. I'll verify by running the UI locally and confirming citations render correctly and responses are grounded in retrieved content.
