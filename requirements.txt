@@ -3,6 +3,10 @@ chromadb>=0.6.0
 groq==0.15.0
 python-dotenv==1.0.1
 
+# HTML cleaning (Stage 1 — clean.py):
+beautifulsoup4==4.15.0
+lxml>=5.0.0
+
 # Query interface — add whichever you use for Milestone 5:
 # gradio>=6.9.0
 # streamlit>=1.40.0

@@ -1,9 +1,5 @@
 ## Reddit
 
-Extract OP content and every reply.
-
-<div class="usertext-body may-blank-within md-container " ><div class="md">
-
 **OP:**
 
 Thread title:
@@ -16,8 +12,9 @@ Timestamp:
     <time datetime="2026-02-11T16:23:11+00:00">  ← extract datetime attribute - YYYY-MM-DD only
 
 Score:
-<div class="midcol unvoted">
-    <div class="thing" data-score="6">  ← extract data-score attribute
+<div class="thing link" data-score="6">  ← extract data-score attribute
+    (the OP is the one "link" thing on the page; data-score sits on it
+     directly, NOT inside <div class="midcol unvoted">)
 
 Text:
 <div class="expando">
@@ -36,7 +33,9 @@ Timestamp:
 
 Score:
 <p class="tagline">
-    <div class="thing" data-score="6">  ← extract data-score attribute
+    <span class="score unvoted" title="5">  ← extract the title attribute
+    (it's a <span>, not a <div>; the count is in title, not data-score.
+     A score-hidden comment has no .score.unvoted span -> record score as "None")
 
 Text:
 <div class="commentarea">
@@ -53,3 +52,12 @@ Strip before extracting:
 <div class="side">      ← subreddit sidebar
 <div class="footer">    ← page footer
 <script> and <style>    ← all script and style tags
+
+Strip after extracting text:
+- <image> tags  ← old.reddit renders an inline image as an <a> link whose
+  visible text is the literal string "<image>"; drop those anchors (and any
+  real <img> tags) so the placeholder doesn't end up in the body text.
+
+Skip these comments entirely (do not emit a block):
+- deleted/removed comments: <div class="md"> body text is "[deleted]" or "[removed]"
+- comments with no paragraph text after cleaning

@@ -152,11 +152,21 @@
 **Instance 1**
 
 - *What I gave the AI:*
+I gave the AI my cleaning_spec.md file that contains instructions for cleaning source HTML files. 
+
 - *What it produced:*
+It noticed written patterns for Reddit comments that ended in a new line rather than punctuation which it said indicates the comment had not been fully expanded in the HTML and Reddit had truncated it. It recommended a spec change to skip comments not ending in punctuation. I initially accepted the change which produced .txt files missing Reddit thread comments.
+
 - *What I changed or overrode:*
+I verified that the HTML files contained the fully expanded reply, and removed that instruction from the spec with the justification that Reddit replies contain informal language lacking punctuation.
 
 **Instance 2**
 
 - *What I gave the AI:*
+Stripping image
+
 - *What it produced:*
+Did not strip image
+
 - *What I changed or overrode:*
+Told it where to look
