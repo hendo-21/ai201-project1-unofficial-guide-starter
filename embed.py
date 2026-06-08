@@ -17,13 +17,8 @@ from pathlib import Path
 
 import chromadb
 from chromadb.utils import embedding_functions
+from config import EMBEDDING_MODEL, CHROMA_PATH, CHROMA_COLLECTION
 
-# Mirrors planning.md > Retrieval Approach and Architecture. Kept local to this
-# starter (there is no shared config.py yet); promote to a config module if the
-# rest of the pipeline needs to share these values.
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
-CHROMA_PATH = "./chroma_db"
-CHROMA_COLLECTION = "unofficial_guide"
 CHUNKS_PATH = "documents/chunks.json"
 
 # Fields that are NOT stored as metadata: `text` is the document body ChromaDB
@@ -46,7 +41,7 @@ def get_collection():
     """
     return _client.get_or_create_collection(
         name=CHROMA_COLLECTION,
-        embedding_function=_ef,
+        embedding_function=_ef, # type: ignore
         metadata={"hnsw:space": "cosine"},
     )
 

@@ -13,9 +13,8 @@ Run `python retrieve.py` to try a sample query against the stored collection.
 """
 
 from embed import get_collection
+from config import N_RESULTS
 
-# planning.md > Retrieval Approach > Top-k. Retrieve the 5 closest chunks per query.
-TOP_K = 8
 
 # What we ask ChromaDB to return for each match. "documents" is the chunk text,
 # "metadatas" carries the source fields embed.py stored, "distances" is the
@@ -32,7 +31,7 @@ SOURCE_DETAIL_FIELD = {
 }
 
 
-def retrieve(query_texts: str, n_results: int = TOP_K, include=INCLUDE) -> list[dict]:
+def retrieve(query_texts: str, n_results: int = N_RESULTS, include=INCLUDE) -> list[dict]:
     """Return the chunks most relevant to `query_texts`, closest first.
 
     Args:
