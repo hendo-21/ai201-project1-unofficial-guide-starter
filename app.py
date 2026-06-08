@@ -1,4 +1,4 @@
-import gradio as gr
+import gradio as gr     # type: ignore
 from retrieve import retrieve
 from generator import generate_response
 
