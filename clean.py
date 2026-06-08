@@ -1,21 +1,22 @@
 """clean.py — Stage 1 (INGEST): turn raw HTML into clean, structured text.
 
-Each reddit_*.html file in documents/ is one thread page saved from
-old.reddit.com. clean_reddit() throws away the page boilerplate (sidebar,
-footer, scripts, styles) and keeps only what we want to embed later:
+Raw HTML pages live in documents/html-backups/, one per source. Each source
+type has its own cleaner that throws away page boilerplate (sidebars, footer,
+scripts, styles) and keeps only what we want to embed later, as plain-text
+blocks with the key metadata kept inline so it travels with the chunk:
 
-  - the thread title  (the chunk stage prepends this to every chunk)
-  - the original post  (OP)
-  - every comment, with how deeply it is nested as a reply
+  - clean_reddit() — old.reddit threads: the OP and every comment, with the
+    thread title, date, score, and reply depth.
+  - clean_rmd()    — RateMyDorm pages: one block per review, with the dorm
+    name, date, and room type.
+  - clean_guide()  — GuideToBU wiki pages (TODO).
 
-For the OP and each comment we also keep three pieces of metadata as plain
-text — date, score, and depth — so they travel with the chunk and stay
-searchable instead of being thrown away with the tags.
-
-Run `python clean.py` to clean every reddit_*.html in documents/ and write a
-matching .txt file into documents/cleaned/.
+Run `python clean.py` to clean every supported *.html in documents/html-backups/
+and write a matching .txt file into documents/cleaned/.
 """
 
+import re
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from bs4 import BeautifulSoup
@@ -64,17 +65,16 @@ def _body(md):
 def clean_reddit(html: str) -> str:
     """Clean one old.reddit thread page into structured text.
 
-    Output looks like:
+    The thread title rides along in every block (thread=...) so each block is
+    self-contained for the chunk stage. Output looks like:
 
-        THREAD: Best/worst dorms : BostonU
-
-        [OP | date=2026-05-10 | score=20 | depth=0]
+        [OP | thread=Best/worst dorms : BostonU | date=2026-05-10 | score=20]
         ...post text...
 
-        [REPLY | date=2026-05-10 | score=3 | depth=0]
+        [REPLY | thread=Best/worst dorms : BostonU | date=2026-05-10 | score=3 | depth=0]
         ...comment text...
 
-        [REPLY | date=2026-05-10 | score=None | depth=1]
+        [REPLY | thread=Best/worst dorms : BostonU | date=2026-05-10 | score=None | depth=1]
         ...nested comment text...
     """
     soup = BeautifulSoup(html, "lxml")
@@ -87,9 +87,8 @@ def clean_reddit(html: str) -> str:
 
     blocks = []
 
-    # 2. Thread title comes from <head><title>.
+    # 2. Thread title comes from <head><title>. It is prepended to every block.
     title = soup.title.get_text(strip=True) if soup.title else ""
-    blocks.append(f"THREAD: {title}")
 
     # 3. The original post (OP) is the one "link" thing on the page.
     op = soup.select_one("div.thing.link")
@@ -97,7 +96,7 @@ def clean_reddit(html: str) -> str:
         date = _date(op.select_one("p.tagline"))
         score = op.get("data-score", "None")
         body = _body(op.select_one("div.expando div.usertext-body div.md"))
-        blocks.append(f"[OP | date={date} | score={score} | depth=0]\n{body}")
+        blocks.append(f"[OP | thread={title} | date={date} | score={score}]\n{body}")
 
     # 4. Comments, in the order they appear on the page.
     comment_area = soup.select_one("div.commentarea")
@@ -119,17 +118,87 @@ def clean_reddit(html: str) -> str:
         # A top-level comment has no div.child ancestor, so depth = 0.
         depth = len(entry.find_parents("div", class_="child"))
 
-        blocks.append(f"[REPLY | date={date} | score={score} | depth={depth}]\n{body}")
+        blocks.append(
+            f"[REPLY | thread={title} | date={date} | score={score} | depth={depth}]\n{body}"
+        )
 
     return "\n\n".join(blocks) + "\n"
+
+
+def _relative_to_date(text):
+    """Turn a relative time like "3 months ago" into an approximate YYYY-MM-DD.
+
+    RateMyDorm only tells us how long ago a review was posted, so we count back
+    from today's date. This is deliberately rough: per the spec, any
+    "N years ago" collapses to January 1st of that year, and months land on the
+    1st of the resolved month.
+    """
+    now = datetime.now()
+    match = re.search(r"(\d+|a|an)\s+(second|minute|hour|day|week|month|year)", text.lower())
+    if not match:
+        return now.strftime("%Y-%m-%d")  # "just now", "today", or unrecognized
+
+    n = 1 if match.group(1) in ("a", "an") else int(match.group(1))
+    unit = match.group(2)
+    if unit == "year":
+        return f"{now.year - n:04d}-01-01"
+    if unit == "month":
+        months = (now.year * 12 + now.month - 1) - n  # count months from year 0
+        return f"{months // 12:04d}-{months % 12 + 1:02d}-01"
+    days = {"second": 0, "minute": 0, "hour": 0, "day": 1, "week": 7}[unit] * n
+    return (now - timedelta(days=days)).strftime("%Y-%m-%d")
+
+
+def _room_type(card):
+    """Extract the room type from a review card, e.g. "double" or "single".
+
+    The text reads "Lived in a double"; we drop the "Lived in a " prefix and
+    keep the rest as-is. Returns "unknown" if the field is blank or missing.
+    """
+    div = card.select_one("div.font-medium.text-gray-600")
+    text = " ".join(div.get_text(" ").split()) if div else ""
+    prefix = "Lived in a "
+    if text.startswith(prefix):
+        return text[len(prefix):].strip() or "unknown"
+    return "unknown"
 
 
 def clean_rmd(html: str) -> str:
     """Clean one RateMyDorm page into structured text.
 
-    TODO: implement once the RateMyDorm cleaning spec is provided.
+    Output is one block per review:
+
+        [REVIEW | dorm=Warren Towers | date=2025-08-01 | room_type=double]
+        ...review text...
     """
-    raise NotImplementedError("clean_rmd() not implemented yet")
+    soup = BeautifulSoup(html, "lxml")
+
+    # 1. Strip boilerplate BEFORE extracting. The two sidebars use Tailwind
+    #    classes containing ":" and "/", so we match each by a distinctive
+    #    class fragment: "xl:hidden" (mobile) and "xl:order-2" (desktop).
+    for junk in soup(["nav", "footer", "script", "style"]):
+        junk.decompose()
+    for junk in soup.select('div[class*="xl:hidden"], div[class*="xl:order-2"]'):
+        junk.decompose()
+
+    # 2. Dorm name from the page heading, e.g. "Warren Towers Reviews".
+    h1 = soup.select_one('h1[itemtype="https://schema.org/Residence"]')
+    dorm = re.sub(r"\s*Reviews$", "", " ".join(h1.get_text(" ").split())) if h1 else "unknown"
+
+    # 3. One block per review. Each review sits in its own <section> alongside
+    #    its timestamp and room type, so we read those from the same section.
+    blocks = []
+    for review in soup.select('p[itemtype="https://schema.org/Review"]'):
+        body = _body(review)
+        if not body:
+            continue  # skip blank reviews
+        card = review.find_parent("section")
+        timestamp = card.select_one("p.block.text-gray-600.text-sm.font-medium") if card else None
+        date = _relative_to_date(timestamp.get_text(strip=True)) if timestamp else ""
+        room_type = _room_type(card) if card else "unknown"
+        blocks.append(f"[REVIEW | dorm={dorm} | date={date} | room_type={room_type}]\n{body}")
+
+    return "\n\n".join(blocks) + "\n"
 
 
 def clean_guide(html: str) -> str:
@@ -150,12 +219,12 @@ CLEANERS = {
 
 
 def main():
-    documents = Path("documents")
+    input_dir = Path("documents/html-backups")
     output_dir = Path("documents/cleaned")
     output_dir.mkdir(exist_ok=True)
 
     for prefix, cleaner in CLEANERS.items():
-        for html_path in sorted(documents.glob(f"{prefix}_*.html")):
+        for html_path in sorted(input_dir.glob(f"{prefix}_*.html")):
             try:
                 cleaned = cleaner(html_path.read_text(encoding="utf-8"))
             except NotImplementedError:

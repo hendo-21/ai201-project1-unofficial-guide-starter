@@ -61,3 +61,42 @@ Strip after extracting text:
 Skip these comments entirely (do not emit a block):
 - deleted/removed comments: <div class="md"> body text is "[deleted]" or "[removed]"
 - comments with no paragraph text after cleaning
+
+**Output format:**
+One block per comment:
+[OP | thread={thread_title} | date={YYYY-MM-DD} | score={score}]
+{post_text}
+
+[REPLY | thread={thread_title} | date={YYYY-MM-DD} | score={score} | depth={depth}]
+{comment_text}
+
+
+## RateMyDorm
+
+Dorm name:
+<h1 itemtype="https://schema.org/Residence"> ← extract text, strip trailing " Reviews"
+
+Timestamp:
+<p class="block text-gray-600 text-sm font-medium"> ← relative string e.g. "3 months ago"
+Convert to YYYY-MM-DD using datetime.now() at script execution time.
+Approximate only — "3 years ago" resolves to YYYY-01-01.
+
+Review:
+<p itemtype="https://schema.org/Review"> ← extract text content
+
+Room type:
+<div class="font-medium text-gray-600"> ← text following "Lived in a"
+Store as-is (e.g. "double", "single", "quad"). Use "unknown" if absent.
+
+Strip before extracting:
+<nav>                   ← site navigation
+<footer>                ← page footer
+<script> and <style>    ← all script and style tags
+<div class="xl:order-2 xl:ml-8 xl:w-2/4 space-y-8 2xl:w-5/12">  ← desktop sidebar
+<div class="xl:hidden"> ← mobile sidebar (duplicate of desktop sidebar)
+
+**Output format:**
+One block per review:
+[REVIEW | dorm={dorm_name} | date={YYYY-MM-DD} | room_type={room_type}]
+
+## GuideToBU
