@@ -84,7 +84,7 @@ A lightweight sentence-transformers model that runs locally with no API key or r
 - Lower accuracy than larger models (e.g., OpenAI's `text-embedding-3-large`), but no cost and no latency from network calls.
 - Compressed representation of meaning, but narrow domain means core content meaning should be preserved.
 
-**Top-k: 5**
+**Top-k: 8**
 
 Given the diversity of document sources, it may be worth expanding to 8-10 if source diversity is limited.
 
