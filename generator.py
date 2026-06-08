@@ -31,7 +31,7 @@ SOURCES = {
     "ratemydorm": ("Rate My Dorm", "dorm"),
 }
 
-def generate_response(query: str, retrieved_chunks: list) -> str:
+def generate_response(query: str, retrieved_chunks: list) -> tuple:
     """
     Answer `query` using ONLY the text in `retrieved_chunks`, then append the
     sources those chunks came from.
@@ -57,11 +57,11 @@ def generate_response(query: str, retrieved_chunks: list) -> str:
     # No chunks made it past the retrieval distance threshold, so there is
     # nothing to ground an answer in. Bail out before calling the LLM.
     if not retrieved_chunks:
-        return (
+        answer = (
             "I couldn't find anything relevant in the loaded documents. "
             "Try rephrasing your question — or check that your ingestion pipeline is working."
         )
-
+        return answer, ''
     # [2] Wrap each chunk in a tag so the model can tell them apart and see
     #     exactly which text it is allowed to use.
     context = _construct_context(retrieved_chunks)
@@ -90,10 +90,11 @@ def generate_response(query: str, retrieved_chunks: list) -> str:
     # If the model followed the reminder and said it has no relevant info, don't
     # tack a "Sources" list onto an answer that doesn't actually cite anything.
     if "couldn't find any relevant information" in answer:
-        return answer
+        return answer, ''
 
     # [5] Append the sources the answer was grounded in.
-    return answer + "\n\n" + _construct_sources_cited(retrieved_chunks)
+    # return answer + "\n\n" + _construct_sources_cited(retrieved_chunks)
+    return answer, _construct_sources_cited(retrieved_chunks)
 
 
 def _construct_context(retrieved_chunks: list) -> str:
