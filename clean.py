@@ -9,7 +9,6 @@ blocks with the key metadata kept inline so it travels with the chunk:
     thread title, date, score, and reply depth.
   - clean_rmd()    — RateMyDorm pages: one block per review, with the dorm
     name, date, and room type.
-  - clean_guide()  — GuideToBU wiki pages (TODO).
 
 Run `python clean.py` to clean every supported *.html in documents/html-backups/
 and write a matching .txt file into documents/cleaned/.
@@ -201,20 +200,11 @@ def clean_rmd(html: str) -> str:
     return "\n\n".join(blocks) + "\n"
 
 
-def clean_guide(html: str) -> str:
-    """Clean one GuideToBU wiki page into structured text.
-
-    TODO: implement once the GuideToBU cleaning spec is provided.
-    """
-    raise NotImplementedError("clean_guide() not implemented yet")
-
-
 # Each source type has its own HTML layout, so it gets its own cleaner.
 # The key is the filename prefix in documents/ (e.g. reddit_p1.html).
 CLEANERS = {
     "reddit": clean_reddit,
     "rmd": clean_rmd,
-    "guide": clean_guide,
 }
 
 

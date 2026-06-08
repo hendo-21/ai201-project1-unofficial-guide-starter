@@ -98,5 +98,3 @@ Strip before extracting:
 **Output format:**
 One block per review:
 [REVIEW | dorm={dorm_name} | date={YYYY-MM-DD} | room_type={room_type}]
-
-## GuideToBU

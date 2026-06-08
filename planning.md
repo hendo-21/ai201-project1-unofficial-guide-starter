@@ -31,9 +31,6 @@ Undergrad housing experiences at Boston University. Boston University’s campus
 | 8 | Reddit | Fenway Guide| https://www.reddit.com/r/BostonU/comments/1r37ax7/fenway_living_experience_as_a_freshman/ |
 | 9 | Reddit | East, West, Central Comp | https://www.reddit.com/r/BostonU/comments/1jkkcxl/deciding_between_warren_fenway_and_the_towers/ |
 | 10 | GuidetoBU Wiki| Detailed Community Housing Summaries by Dorm | https://guidetobu.com/housing/ |
-| 11 | GuidetoBU Wiki | Dorm Power rankings | https://guidetobu.com/housing/bu-housing/ |
-| 12 | GuidetoBU Wiki | Apartment Style Living | https://guidetobu.com/housing/bu-apartment-style-housing/ |
-| 13 | GuidetoBU Wiki| Restaurants Near Campus | https://guidetobu.com/food/ |
 
 ---
 
@@ -184,7 +181,7 @@ User query
 
 **Milestone 3 — Ingestion and chunking:**
 
-I'll give Claude my set of source documents saved as raw HTML, the architecture section, and an annotated example of each source's HTML with boilerplate regions marked. I'll ask it to implement `clean_reddit()`, `clean_rmd()` and `clean_guide()` to remove boilerplate, extract metadata, and translate tags to structural text markers. I will review each source's HTML and identify the relevant sections of the HTML should be preserved, and which should be stripped. I will manually inspect the cleaned output for each source type against the raw HTML to verify that boilerplate has been removed, structural markers are preserved, and metadata fields like ratings and heading paths have been correctly extracted.
+I'll give Claude my set of source documents saved as raw HTML, the architecture section, and `cleaning_spec.md`. I'll ask it to implement `clean_reddit()` and `clean_rmd()` to remove boilerplate, extract metadata, and translate tags to structural text markers. I will manually inspect the cleaned output for each source type against the raw HTML to verify that boilerplate has been removed, structural markers are preserved, and metadata fields like ratings and heading paths have been correctly extracted.
 
 I'll give Claude my chunking strategy section, the normalized chunk dict schema, and an example of cleaned output from each source type. I'll give Claude my chunking strategy section and ask it to implement `chunk_reddit()`, `chunk_rmd()`, and `chunk_guide()` with my specified source-specific sentance-splitting strategy, minimum character count, and maximum word counts. I'll manually inspect 5 chunks per source type to verify the metadata prefix is correctly prepended, dorm names are normalized, and no boilerplate text survived cleaning.
 

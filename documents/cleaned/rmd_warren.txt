@@ -1,3 +1,5 @@
+# Source URL: https://www.ratemydorm.com/reviews/boston-university/boston-university-warren-towers
+
 [REVIEW | dorm=Warren Towers | date=2025-08-01 | room_type=other]
 "right now the class year & room type fields are required, so if you do this change, youd need to do null checks when reading the data on the dorm pages" 3:08 what jed said 3:09 bro don't approve that that was me
 
