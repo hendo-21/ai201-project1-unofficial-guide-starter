@@ -195,6 +195,6 @@ I'll give Claude my `retrieve()` function and the normalized dict schema. I'll a
 
 **Milestone 5 — Generation and interface:**
 
-I'll give Claude my `retrieve()` implementation, the architecture section, and my Groq API credentials. I'll ask it to implement `generate()` that takes the user query and retrieved chunks, constructs a prompt instructing the LLM to answer using only the provided context and cite sources by dorm name and source type, and calls the Groq API.
+I'll give Claude my `retrieve()` implementation, the architecture section, and my Groq API credentials. I'll ask it to implement `generate()` that takes the user query and retrieved chunks, constructs a prompt instructing the LLM to answer using only the provided context, cite sources and call the Groq API.
 
 I'll give Claude my `generate()` function and ask it to implement a Gradio interface displays the user query, generated answer, and source citations for each response. I'll verify by running the UI locally and confirming citations render correctly and responses are grounded in retrieved content.

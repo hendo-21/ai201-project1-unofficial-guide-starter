@@ -17,3 +17,4 @@ CHROMA_PATH = "./chroma_db"
 
 # --- Retrieval ---
 N_RESULTS = 8
+DISTANCE_THRESHOLD = 0.6

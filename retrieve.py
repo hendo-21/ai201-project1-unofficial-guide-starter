@@ -13,7 +13,7 @@ Run `python retrieve.py` to try a sample query against the stored collection.
 """
 
 from embed import get_collection
-from config import N_RESULTS
+from config import N_RESULTS, DISTANCE_THRESHOLD
 
 
 # What we ask ChromaDB to return for each match. "documents" is the chunk text,
@@ -31,7 +31,7 @@ SOURCE_DETAIL_FIELD = {
 }
 
 
-def retrieve(query_texts: str, n_results: int = N_RESULTS, include=INCLUDE) -> list[dict]:
+def retrieve(query_texts: str, n_results: int = N_RESULTS, include=INCLUDE, threshold: float=DISTANCE_THRESHOLD) -> list[dict]:
     """Return the chunks most relevant to `query_texts`, closest first.
 
     Args:
@@ -64,34 +64,36 @@ def retrieve(query_texts: str, n_results: int = N_RESULTS, include=INCLUDE) -> l
 
     results = []
     for text, metadata, distance in zip(documents, metadatas, distances):
-        source_type = metadata.get("source_type")
+        if distance <= threshold:
+            source_type = metadata.get("source_type")
 
-        result = {
-            "text": text,
-            "source_type": source_type,
-            "distance": distance,
-        }
+            result = {
+                "text": text,
+                "source_type": source_type,
+                "distance": distance,
+            }
 
-        # Add the one extra field that makes sense for this source type. If we
-        # don't recognize the source, we simply skip the extra field.
-        detail_field = SOURCE_DETAIL_FIELD.get(source_type) # type: ignore
-        if detail_field is not None:
-            result[detail_field] = metadata.get(detail_field)
+            # Add the one extra field that makes sense for this source type. If we
+            # don't recognize the source, we simply skip the extra field.
+            detail_field = SOURCE_DETAIL_FIELD.get(source_type) # type: ignore
+            if detail_field is not None:
+                result[detail_field] = metadata.get(detail_field)
 
-        results.append(result)
+            results.append(result)
 
     return results
 
 
 def main():
-    query = "What are the bed sizes at Warren Towers?"
+    query = "Can I get into Stuvi2 as a freshman?"
     print(f"Query: {query}\n")
 
     results = retrieve(query)
     for rank, result in enumerate(results, start=1):
         print(f"[{rank}] {result['source_type']} (distance: {result['distance']:.4f})")
         print(f"    {result['text'][:200]}...\n")
+    print("\n", results)
 
 
 if __name__ == "__main__":
-    main()
+    main() 
