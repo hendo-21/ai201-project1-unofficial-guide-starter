@@ -10,6 +10,7 @@
 ## Domain
 
 Undergrad housing experiences at Boston University. Boston University’s campus is highly urbanized, stretching horizontally across a two-mile corridor along Commonwealth Avenue and spanning several distinct Boston neighborhoods. As a result of the housing diversity, and quality of on-campus housing, many students opt to stay within student housing for their entire four years. Official BU housing materials provide basic amenity checklists and emphasize proximity to academic landmarks, but they sanitize the day-to-day realities of campus living. Location, the diversity of housing types, neighborhood logistics, and non-University supported community amenities dictate a student’s daily routine just as much as the room itself. Finding the right student housing requires careful review of community forums and unofficial wikis.
+
 ---
 
 ## Document Sources
