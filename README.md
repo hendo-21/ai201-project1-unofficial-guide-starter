@@ -82,7 +82,7 @@ I wrote a `cleaning_spec.md` to support in directing Claude Code to write two cl
 Source: Reddit | https://www.reddit.com/r/BostonU/comments/1t8s6yp/my_rankingadvice_for_freshman_housing/
 Chunk:
   {
-    "[Reddit | Thread: My ranking/advice for freshman housing : BostonU | Date: 2026-05-10 | Score: 20]\nalso the closest T is kenmore which is a bit of a walk and its underground so you have to pay kilachand: great location right near marcis and central campus. i havent personally seen the dorms however im pretty sure they have ac and private bathrooms. and you dont have to be in the honors college to live there hojo: i havent seen a room however most are triples and doubles are hard to come by. personally im not the biggest fan of the vibes of hojo it feels like a creepy musty old hotel however it has a great location in central campus bay state road brownstones: each brownstone is different however from the ones ive seen they are oftentimes very spacious. its hard with housing as a freshman becaudse you dont know where on bay state you will be because it goes pretty far down. towers: solid option good location and is on baystate road so more peaceful and quiet than warren on comm ave.",
+    "also the closest T is kenmore which is a bit of a walk and its underground so you have to pay kilachand: great location right near marcis and central campus. i havent personally seen the dorms however im pretty sure they have ac and private bathrooms. and you dont have to be in the honors college to live there hojo: i havent seen a room however most are triples and doubles are hard to come by. personally im not the biggest fan of the vibes of hojo it feels like a creepy musty old hotel however it has a great location in central campus bay state road brownstones: each brownstone is different however from the ones ive seen they are oftentimes very spacious. its hard with housing as a freshman becaudse you dont know where on bay state you will be because it goes pretty far down. towers: solid option good location and is on baystate road so more peaceful and quiet than warren on comm ave.",
 
     "source_url": "https://www.reddit.com/r/BostonU/comments/1t8s6yp/my_rankingadvice_for_freshman_housing/",
   }
@@ -90,7 +90,7 @@ Chunk:
   Source: Reddit | https://www.reddit.com/r/BostonU/comments/1qgtrjm/best_freshman_dorms/
   Chunk:
   {
-    "text": "[Reddit | Thread: Best Freshman dorms? : BostonU | Date: 2026-01-19 | Score: 10]\nbut, i don't understand why these small town people think warren and west are trash. warren gave me the best first year oof my lives and in still friends with them today. these cringe kids have to stop acting they going to be thrown in Azkaba.",
+    "text": "but, i don't understand why these small town people think warren and west are trash. warren gave me the best first year oof my lives and in still friends with them today. these cringe kids have to stop acting they going to be thrown in Azkaba.",
     "chunk_id": "reddit_35",
     "source_type": "reddit",
     "source_url": "https://www.reddit.com/r/BostonU/comments/1qgtrjm/best_freshman_dorms/",
@@ -103,7 +103,7 @@ Chunk:
   Source: Rate My Dorm | https://www.ratemydorm.com/reviews/boston-university/boston-university-1019-commonwealth-avenue
   Chunk:
   {
-    "text": "[RateMyDorm | Dorm: 1019 Commonwealth Avenue | Date: 2023-01-01 | Room: unknown]\nDefinitely a good place to live sophomore year or even for underclassmen if you can get it. If you dont mind its one bathroom for average 6 people, 3 doubles in a suite so if you want a single you are out of luck with 1019. Overall pretty nice place but very far west so if you have classes say in Questrom thats rough.",
+    "text": "Definitely a good place to live sophomore year or even for underclassmen if you can get it. If you dont mind its one bathroom for average 6 people, 3 doubles in a suite so if you want a single you are out of luck with 1019. Overall pretty nice place but very far west so if you have classes say in Questrom thats rough.",
     "chunk_id": "ratemydorm_1",
     "source_type": "ratemydorm",
     "source_url": "https://www.ratemydorm.com/reviews/boston-university/boston-university-1019-commonwealth-avenue",
@@ -116,7 +116,7 @@ Chunk:
   Source: Rate My Dorm | https://www.ratemydorm.com/reviews/boston-university/boston-university-bay-state-road-brownstones
   Chunk
   {
-    "text": "[RateMyDorm | Dorm: Bay State Road Brownstones | Date: 2021-01-01 | Room: double]\nOurs had two common areas, beautiful hardwood flooring in the room, laundry in the basement. A few problems, though: one tiny shared closet, shared bathroom (1 between 6 girls), construction starting right outside the window for the past two years now starting at 7am",
+    "text": "Ours had two common areas, beautiful hardwood flooring in the room, laundry in the basement. A few problems, though: one tiny shared closet, shared bathroom (1 between 6 girls), construction starting right outside the window for the past two years now starting at 7am",
     "chunk_id": "ratemydorm_30",
     "source_type": "ratemydorm",
     "source_url": "https://www.ratemydorm.com/reviews/boston-university/boston-university-bay-state-road-brownstones",
@@ -129,7 +129,7 @@ Chunk:
   Source: Guide To BU Wiki | https://guidetobu.com/housing/bay-state-road-bu/
   Chunk:
   {
-    "text": "[GuidetoBU | Bay State Road > Amenities and Perks of Bay State Road Living]\nLiving on Bay State Road comes with a host of convenient amenities and benefits that enhance the overall college experience: Proximity to Campus: With the BU central campus just a short walk away, Bay State residents have easy access to classrooms, dining halls, and other university resources. Green Spaces: The tree-lined streets and Charles River Esplanade provide ample opportunities for outdoor recreation, study sessions, and enjoying the beautiful Boston scenery. Vibrant Off-Campus Community: Beyond the dorms, Bay State Road is home to a thriving off-campus community, with local shops, restaurants, and social hubs that cater to BU students. Public Transportation: The MBTA Green Line's B branch runs directly through the Bay State area, making it a breeze to get around campus and explore the city. Amenities and Resources: Many of the Bay State dorms offer on-site amenities like fitness centers, study lounges, and community kitchens to enhance the residential experience.",
+    "text": "Living on Bay State Road comes with a host of convenient amenities and benefits that enhance the overall college experience: Proximity to Campus: With the BU central campus just a short walk away, Bay State residents have easy access to classrooms, dining halls, and other university resources. Green Spaces: The tree-lined streets and Charles River Esplanade provide ample opportunities for outdoor recreation, study sessions, and enjoying the beautiful Boston scenery. Vibrant Off-Campus Community: Beyond the dorms, Bay State Road is home to a thriving off-campus community, with local shops, restaurants, and social hubs that cater to BU students. Public Transportation: The MBTA Green Line's B branch runs directly through the Bay State area, making it a breeze to get around campus and explore the city. Amenities and Resources: Many of the Bay State dorms offer on-site amenities like fitness centers, study lounges, and community kitchens to enhance the residential experience.",
     "chunk_id": "guidetobu_2",
     "source_type": "guidetobu",
     "source_url": "https://guidetobu.com/housing/bay-state-road-bu/",
@@ -151,6 +151,41 @@ Chunk:
   },
 
 ```
+
+## Sample Chunks and Source Attribution
+
+Below are 5 labeled sample chunks extracted from the knowledge base, displaying the parsed text and their respective source document names.
+
+### Chunk 1
+* **Source URL:** https://www.reddit.com/r/BostonU/comments/1t8s6yp/my_rankingadvice_for_freshman_housing/
+* **Chunk Text:**
+  > "[Reddit | Thread: My ranking/advice for freshman housing : BostonU | Date: 2026-05-10 | Score: 20]\ nalso the closest T is kenmore which is a bit of a walk and its underground so you have to pay kilachand: great location right near marcis and central campus. i havent personally seen the dorms however im pretty sure they have ac and private bathrooms. and you dont have to be in the honors college to live there hojo: i havent seen a room however most are triples and doubles are hard to come by. personally im not the biggest fan of the vibes of hojo it feels like a creepy musty old hotel however it has a great location in central campus bay state road brownstones: each brownstone is different however from the ones ive seen they are oftentimes very spacious. its hard with housing as a freshman becaudse you dont know where on bay state you will be because it goes pretty far down. towers: solid option good location and is on baystate road so more peaceful and quiet than warren on comm ave."
+
+
+
+### Chunk 2
+* **Source URL:** https://www.reddit.com/r/BostonU/comments/1qgtrjm/best_freshman_dorms/
+* **Chunk Text:**
+  > "[Reddit | Thread: Best Freshman dorms? : BostonU | Date: 2026-01-19 | Score: 10]\nbut, i don't understand why these small town people think warren and west are trash. warren gave me the best first year oof my lives and in still friends with them today. these cringe kids have to stop acting they going to be thrown in Azkaba."
+
+
+### Chunk 3
+* **Source URL:** https://www.ratemydorm.com/reviews/boston-university/boston-university-1019-commonwealth-avenue
+* **Chunk Text:**
+  > "[RateMyDorm | Dorm: 1019 Commonwealth Avenue | Date: 2023-01-01 | Room: unknown]\nDefinitely a good place to live sophomore year or even for underclassmen if you can get it. If you dont mind its one bathroom for average 6 people, 3 doubles in a suite so if you want a single you are out of luck with 1019. Overall pretty nice place but very far west so if you have classes say in Questrom thats rough."
+
+
+### Chunk 4
+* **Source URL:** https://www.ratemydorm.com/reviews/boston-university/boston-university-bay-state-road-brownstones
+* **Chunk Text:**
+  > "[RateMyDorm | Dorm: Bay State Road Brownstones | Date: 2021-01-01 | Room: double]\nOurs had two common areas, beautiful hardwood flooring in the room, laundry in the basement. A few problems, though: one tiny shared closet, shared bathroom (1 between 6 girls), construction starting right outside the window for the past two years now starting at 7am"
+
+
+### Chunk 5
+* **Source URL:** https://guidetobu.com/housing/bay-state-road-bu/
+* **Chunk Text:**
+  > "[GuidetoBU | Bay State Road > Amenities and Perks of Bay State Road Living]\nLiving on Bay State Road comes with a host of convenient amenities and benefits that enhance the overall college experience: Proximity to Campus: With the BU central campus just a short walk away, Bay State residents have easy access to classrooms, dining halls, and other university resources. Green Spaces: The tree-lined streets and Charles River Esplanade provide ample opportunities for outdoor recreation, study sessions, and enjoying the beautiful Boston scenery. Vibrant Off-Campus Community: Beyond the dorms, Bay State Road is home to a thriving off-campus community, with local shops, restaurants, and social hubs that cater to BU students. Public Transportation: The MBTA Green Line's B branch runs directly through the Bay State area, making it a breeze to get around campus and explore the city. Amenities and Resources: Many of the Bay State dorms offer on-site amenities like fitness centers, study lounges, and community kitchens to enhance the residential experience."
+
 
 **Final chunk count: 428**
 
