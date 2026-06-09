@@ -76,9 +76,113 @@ A hybrid approach is warranted because the three source types differ fundamental
 
 I wrote a `cleaning_spec.md` to support in directing Claude Code to write two cleaning functions. These cleaning functions took raw HTML from Reddit and Rate My Dorm, constructed comment/review blocks, and placed them in `.txt` files by source url. In the spec, I identified the CSS selectors where the necessary text and metadata was located so that Claude could extract and format it as needed. The Guide To BU Wiki URLs were more copy-paste friendly, so those were processed by hand. Unfortunately, the stripping process used a lot of tokens given the size of the HTML files, so next time I would likely do some pre-processing of those documents before handing them of to Claude. 
 
+**Example Chunks:**
+
+```
+Source: Reddit | https://www.reddit.com/r/BostonU/comments/1t8s6yp/my_rankingadvice_for_freshman_housing/
+Chunk:
+  {
+    "[Reddit | Thread: My ranking/advice for freshman housing : BostonU | Date: 2026-05-10 | Score: 20]\nalso the closest T is kenmore which is a bit of a walk and its underground so you have to pay kilachand: great location right near marcis and central campus. i havent personally seen the dorms however im pretty sure they have ac and private bathrooms. and you dont have to be in the honors college to live there hojo: i havent seen a room however most are triples and doubles are hard to come by. personally im not the biggest fan of the vibes of hojo it feels like a creepy musty old hotel however it has a great location in central campus bay state road brownstones: each brownstone is different however from the ones ive seen they are oftentimes very spacious. its hard with housing as a freshman becaudse you dont know where on bay state you will be because it goes pretty far down. towers: solid option good location and is on baystate road so more peaceful and quiet than warren on comm ave.",
+
+    "source_url": "https://www.reddit.com/r/BostonU/comments/1t8s6yp/my_rankingadvice_for_freshman_housing/",
+  }
+
+  Source: Reddit | https://www.reddit.com/r/BostonU/comments/1qgtrjm/best_freshman_dorms/
+  Chunk:
+  {
+    "text": "[Reddit | Thread: Best Freshman dorms? : BostonU | Date: 2026-01-19 | Score: 10]\nbut, i don't understand why these small town people think warren and west are trash. warren gave me the best first year oof my lives and in still friends with them today. these cringe kids have to stop acting they going to be thrown in Azkaba.",
+    "chunk_id": "reddit_35",
+    "source_type": "reddit",
+    "source_url": "https://www.reddit.com/r/BostonU/comments/1qgtrjm/best_freshman_dorms/",
+    "dorm": null,
+    "date": "2026-01-19",
+    "thread_title": "Best Freshman dorms? : BostonU",
+    "comment_score": 10
+  }
+
+  Source: Rate My Dorm | https://www.ratemydorm.com/reviews/boston-university/boston-university-1019-commonwealth-avenue
+  Chunk:
+  {
+    "text": "[RateMyDorm | Dorm: 1019 Commonwealth Avenue | Date: 2023-01-01 | Room: unknown]\nDefinitely a good place to live sophomore year or even for underclassmen if you can get it. If you dont mind its one bathroom for average 6 people, 3 doubles in a suite so if you want a single you are out of luck with 1019. Overall pretty nice place but very far west so if you have classes say in Questrom thats rough.",
+    "chunk_id": "ratemydorm_1",
+    "source_type": "ratemydorm",
+    "source_url": "https://www.ratemydorm.com/reviews/boston-university/boston-university-1019-commonwealth-avenue",
+    "dorm": "1019 Commonwealth Avenue",
+    "date": "2023-01-01",
+    "room_type": "unknown",
+    "rating": null
+  }
+
+  Source: Rate My Dorm | https://www.ratemydorm.com/reviews/boston-university/boston-university-bay-state-road-brownstones
+  Chunk
+  {
+    "text": "[RateMyDorm | Dorm: Bay State Road Brownstones | Date: 2021-01-01 | Room: double]\nOurs had two common areas, beautiful hardwood flooring in the room, laundry in the basement. A few problems, though: one tiny shared closet, shared bathroom (1 between 6 girls), construction starting right outside the window for the past two years now starting at 7am",
+    "chunk_id": "ratemydorm_30",
+    "source_type": "ratemydorm",
+    "source_url": "https://www.ratemydorm.com/reviews/boston-university/boston-university-bay-state-road-brownstones",
+    "dorm": "Bay State Road Brownstones",
+    "date": "2021-01-01",
+    "room_type": "double",
+    "rating": null
+  }
+
+  Source: Guide To BU Wiki | https://guidetobu.com/housing/bay-state-road-bu/
+  Chunk:
+  {
+    "text": "[GuidetoBU | Bay State Road > Amenities and Perks of Bay State Road Living]\nLiving on Bay State Road comes with a host of convenient amenities and benefits that enhance the overall college experience: Proximity to Campus: With the BU central campus just a short walk away, Bay State residents have easy access to classrooms, dining halls, and other university resources. Green Spaces: The tree-lined streets and Charles River Esplanade provide ample opportunities for outdoor recreation, study sessions, and enjoying the beautiful Boston scenery. Vibrant Off-Campus Community: Beyond the dorms, Bay State Road is home to a thriving off-campus community, with local shops, restaurants, and social hubs that cater to BU students. Public Transportation: The MBTA Green Line's B branch runs directly through the Bay State area, making it a breeze to get around campus and explore the city. Amenities and Resources: Many of the Bay State dorms offer on-site amenities like fitness centers, study lounges, and community kitchens to enhance the residential experience.",
+    "chunk_id": "guidetobu_2",
+    "source_type": "guidetobu",
+    "source_url": "https://guidetobu.com/housing/bay-state-road-bu/",
+    "dorm": "Bay State Road",
+    "date": "2025-01-01",
+    "heading_path": "Bay State Road > Amenities and Perks of Bay State Road Living"
+  }
+
+  Source: Guide To BU Wiki | https://guidetobu.com/housing/danielsen-hall/
+  Chunk:
+  {
+    "text": "[GuidetoBU | Danielsen Hall > Things to Consider About Danielsen Hall]\nCarefully weigh the pros and cons to see if Danielsen is the right housing choice for you.",
+    "chunk_id": "guidetobu_18",
+    "source_type": "guidetobu",
+    "source_url": "https://guidetobu.com/housing/danielsen-hall/",
+    "dorm": "Danielsen Hall",
+    "date": "2025-01-01",
+    "heading_path": "Danielsen Hall > Things to Consider About Danielsen Hall"
+  },
+
+```
+
 **Final chunk count: 428**
 
 ---
+
+## Test Retrieval Examples:
+
+*Note: The retrieval pipeline is configured to return $k=8$ chunks. For readability, only the top-ranked chunks are shown below.*
+
+
+#### Retrieval Test Example 1
+* **Query**: "Does Warren Towers have AC?"
+* **Top Returned Chunks**:
+  1. *(Score: 0.32)* "[GuidetoBU | Warren Towers > The AC Situation (Pre-Renovation)] Warren Towers has no air conditioning in unrenovated towers. This is consistently cited as the #1 complaint. BU provides a fan, but the first month of school (late August through September) can be brutal -- Boston regularly hits the 80s and occasionally the 90s. As one student on RateMyDorm put it: "The rooms have no AC so it can get hot (only for like the first month of school but they give u a fan so there's that)." The heating system in winter creates the opposite problem: "The heating at Warren is always really high, like sweltering, sweaty, gross high," reported a student on Roomsurf. The baseboard heating has no individual room controls. Window AC units are not permitted in traditional residence halls. Post-renovation: All sleeping rooms and lounges in renovated towers will have air conditioning. Tower A (Fall 2026) will be the first to get it."
+  2. *(Score: 0.48)* "[GuidetoBU | Warren Towers > The $550 Million Renovation: Everything Changes] Sustainability: The renovation targets LEED Gold certification and, combined with BU Wind offsets, aims to be net-zero greenhouse gas emissions. What this means for you: If you move into Tower A in Fall 2026, you'll experience a completely different building than what older reviews describe. If assigned to Tower B (2026-2027) or Tower C (2025-2027), you'll still experience the unrenovated Warren for one or two more years. BU Today described the pre-renovation Warren as having "beige cinderblock walls, uninspired common areas and, worst of all, no air conditioning." The renovation addresses every major student complaint."
+* **Relevance Explanation**: The first chunk is highly relevant as indicated by it's low distance score and because it answers the query directly, and with the context that renovated towers have AC. The second chunk, though with a relatively poor distance score, provides specific details about when air-conditioning will arrive in other towers.
+
+
+#### Retrieval Test Example 2
+* **Query**: "What's the best way to get from Fenway to the rest of campus?"
+* **Top Returned Chunks**:
+  1. *(Score: 0.27)* "Reddit | Thread: FENWAY LIVING EXPERIENCE AS A FRESHMAN : BostonU | Date: 2026-02-12 | Score: 14] The big negatives: The closest T stops are longwood/Fenway (d line) each about a 5 minute walk, and St Mary’s (c line) about a 9 minute walk, and having to switch at kenmore (it’s honestly just more time efficient to walk to main campus, I ABUSE the b line on comm ave tho). The walk. The distance. The having to plan out your commute anywhere. Separation from main campus amenities like the fitrec, library, and other dining hall choices. Overall, I’ve really enjoyed living in Fenway campus and especially Peabody, I was hella disappointed getting placed here but I honestly think it’s one of the best experiences I’ve had and it made my freshman year memorable and fun! Feel free to reach out with any questions TLDR; not good but not bad, walk is definitely annoying but dorms are solid and dining hall is good, accessible to a lot of places."
+  2. *(Score: 0.30)* "[Reddit | Thread: My ranking/advice for freshman housing : BostonU | Date: 2026-05-10 | Score: 20] there is a fenway bus and its possible to get over to main campus through T however you would need to make a transfer at kenmore. overall fenwayt dorms and food seem very nice however its a bit far from main campus so that is definitely something to keep in mind. i dont know if bu plans on keeping fenway freshman only indefinitely because then that might mean fenway freshman will get a good housing number for sohphore housing since they cant do same room or internal selection. danielson: danielson is lowkey musty and old and a 10 min walk from marcis it is the farthest building on the east side of campus. however the rooms are big and my friend's had a walk in closet but im not sure if all rooms have one. also there are individual private bathrooms. it is extremely close to newbury street so super convient to go downtown."
+* **Relevance Explanation**: Both chunks provide specific details about how to reach parts of the campus using public transportation, directly answering the query.
+
+
+#### Retrieval Test Example 3
+* **Query**: "Does Myles Standish Hall offer singles?"
+* **Top Returned Chunks**:
+  1. *(Score: 0.36)* "[RateMyDorm | Dorm: Myles Standish Hall | Date: 2021-01-01 | Room: single] Some of the singles are smaller than others so it is a little bit of a gamble but it is a very nice dorm."
+  2. *(Score: 0.38)* "[RateMyDorm | Dorm: Myles Standish Hall | Date: 2023-01-01 | Room: unknown] Currently living here as a junior at BU, unfortunately got stuck in the smallest room in a suite with my best friends, but at least theres that. We currently are in an 8 person suite with 3 doubles and 2 singles. Myles is great but on the very far east side of campus so if you dont have class in Questrom its a long walk, but good news is theres a bus that comes straight to your front door just not as frequently as other places on campus."
+* **Relevance Explanation**: The first chunk's prepended metadata includes the room type as a single, confirming that the answer to the query is yes. Additionally, both chunks mention room configurations.
 
 ## Embedding Model
 
@@ -99,6 +203,28 @@ A lightweight sentence-transformers model that runs locally with no API key or r
 ---
 
 ## Grounded Generation
+
+#### Example system responses with source attribution
+
+**Example 1:**
+* **User Query:** "What is planned for the Warren Towers renovation?"
+* **System Response:** "According to the Guide to BU, the Warren Towers renovation is a $550 million, multi-year project that will completely transform the building. The renovationtargets LEED Gold certification and aims to be net-zero greenhouse gas emissions. Specific changes include the addition of full air conditioning in all rooms and lounges, all-gender, single-user bathrooms, triple-glazed, operable windows, electronic card-entry locks, dimmable LED lighting, new furniture, entirely new plumbing, and improved insulation. The renovation will also address fire safety and accessibility, with a new sprinkler system, fire alarm, and ADA-compliant widened doors. The project is scheduled to be completed in phases, with Tower A reopening in Fall 2026, Tower B in Fall 2027, and Tower C in Fall 2028. Sources:
+· Guide to BU | Warren Towers > The $550 Million Renovation: Everything Changes
+· Rate My Dorm | Warren Towers
+· Reddit | What dorm should I choose? : BostonU
+· Guide to BU | Warren towers > The Honest Review: What Students Love & Hate" 
+
+**Example 2:**
+* **User Query:** "Which dorms are best for upperclassmen?"
+* **System Response:** "According to the Reddit thread 'best and worst dorms/suites to live in as a sophomore transfer?', students recommend Hojo or Bay State for upperclassmen. Reviews on RateMyDorm do not specifically mention upperclassmen preferences, but the Reddit thread suggests that Hojo has private bathrooms and is relatively close to CAS, making it a quiet and convenient option. Bay State is also mentioned as a desirable option, although it may be more difficult to get into. Students on Reddit note that Towers may also be an option, but it may have fewer social opportunities for freshmen, which could be a plus for upperclassmen looking for a quieter environment. Sources:
+· Rate My Dorm | StuVi1 (10 Buick St)
+· Rate My Dorm | Kilachand Hall
+· Reddit | Best/worst dorms : BostonU
+· Reddit | What dorm should I choose? : BostonU
+· Reddit | best and worst dorms/suites to live in as a sophomore transfer? : BostonU
+· Rate My Dorm | Warren Towers
+· Reddit | Best Freshman dorms? : BostonU
+· Reddit | BU Housing Ranking?? : BostonU" 
 
 **System prompt grounding instruction:**
 
