@@ -19,7 +19,6 @@ Undergrad housing experiences at Boston University. Boston University’s campus
 <!-- List your specific sources: URLs, subreddit names, forum threads, or file descriptions.
      Aim for at least 10 sources that together cover different subtopics or perspectives within your domain. -->
 
-| # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
 | 1 | Reddit | Housing Advice | https://www.reddit.com/r/BostonU/comments/1t8s6yp/my_rankingadvice_for_freshman_housing/ |
 | 2 | Reddit | Housing Ranking | https://www.reddit.com/r/BostonU/comments/1r1zs2n/bu_housing_ranking/ |
@@ -27,10 +26,28 @@ Undergrad housing experiences at Boston University. Boston University’s campus
 | 4 | Reddit | Best Freshman Dorms | https://www.reddit.com/r/BostonU/comments/1qgtrjm/best_freshman_dorms/ |
 | 5 | Reddit | Upper classman housing reccs | https://www.reddit.com/r/BostonU/comments/vlegas/best_and_worst_dormssuites_to_live_in_as_a/ |
 | 6 | Reddit | South campus reccs | https://www.reddit.com/r/BostonU/comments/axn40w/which_bay_statesouth_campus_dorms_should_i_aim/ |
-| 7 | RateMyDorm | Dorm-specifc reviews | https://www.ratemydorm.com/dorms/boston-university |
-| 8 | Reddit | Fenway Guide| https://www.reddit.com/r/BostonU/comments/1r37ax7/fenway_living_experience_as_a_freshman/ |
-| 9 | Reddit | East, West, Central Comp | https://www.reddit.com/r/BostonU/comments/1jkkcxl/deciding_between_warren_fenway_and_the_towers/ |
-| 10 | GuidetoBU Wiki| Detailed Community Housing Summaries by Dorm | https://guidetobu.com/housing/ |
+| 7 | Reddit | Fenway Guide| https://www.reddit.com/r/BostonU/comments/1r37ax7/fenway_living_experience_as_a_freshman/ |
+| 8 | Reddit | East, West, Central Comp | https://www.reddit.com/r/BostonU/comments/1jkkcxl/deciding_between_warren_fenway_and_the_towers/ |
+| 9 | RateMyDorm | Warren Towers student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-warre |
+| 10 | RateMyDorm | Buick St student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-10-buick-street |
+| 11 | RateMyDorm | The Towers student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-the-towers |
+| 12 | RateMyDorm | 33 Harry Aganis student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-33-harry-agganis-way |
+| 13 | RateMyDorm | South Campus Apts student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-south-campus-apartments |
+| 14 | RateMyDorm | South Campus Brownstones student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-south-campus-brownstones |
+| 15 | RateMyDorm | Bay St student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-bay-state-road-brownstones |
+| 16 | RateMyDorm | Fenway student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-fenway-campus-162-riverway |
+| 17 | RateMyDorm | Myles-Standish student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-myles-standish-hall |
+| 18 | RateMyDorm | Kilachand Hall reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-kilachand-hall |
+| 19 | RateMyDorm | 575 Comm Ave student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-575-commonwealth-avenue |
+| 20 | RateMyDorm | East Campus student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-east-campus-apartments |
+| 21 | RateMyDorm | Diensen Hall student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-danielsen-hall |
+| 22 | RateMyDorm | 1019 Comm Ave student reviews | https://www.ratemydorm.com/reviews/boston-university/boston-university-1019-commonwealth-avenue |
+| 23 | GuidetoBU Wiki| Warren Towers Unofficial guide | https://guidetobu.com/housing/warren-towers/ |
+| 24 | GuidetoBU Wiki| West Campus Unofficial guide | https://guidetobu.com/housing/west-campus-bu/ |
+| 25 | GuidetoBU Wiki| Stuvi2 Unofficial guide | https://guidetobu.com/housing/stuvi2/ |
+| 26 | GuidetoBU Wiki| Myles-Standish Unofficial guide | https://guidetobu.com/housing/myles-standish-hall/ |
+| 27 | GuidetoBU Wiki| Danielsen Hall Unofficial guide | https://guidetobu.com/housing/danielsen-hall/ |
+| 28 | GuidetoBU Wiki| Bay State Unofficial guide | https://guidetobu.com/housing/bay-state-road-bu/ |
 
 ---
 
@@ -47,7 +64,7 @@ Source: RateMyDorm
 Sentence-aware splitting, capped at 150-175 words per chunk. Reviews are atomic and pertain to a specific dormitory, so a single review will rarely exceed this cap. Where a review does exceed it, the splitter completes the current sentence before starting a new chunk, preserving the integrity of each thought. A dorm name, date, and room type are prepended to each chunk before embedding. Reviews are grouped by dorm name in the source document.
 
 Source: GuideToBu Wiki
-1 section per chunk, using sentence-aware splitting with a 150-175 word cap enforced greedily within each section. Wiki pages are divided cleanly into subsections containing focused prose on the section subject. The splitter packs sentences into a chunk until the next sentence would exceed the cap, then starts a new chunk. A heading path for page, section, subsection is prepended to each chunk before embedding.
+1 section per chunk, using sentence-aware splitting with a 150-175 word cap enforced greedily within each section. Wiki pages are divided cleanly into subsections containing focused prose on the section subject. The splitter packs sentences into a chunk until the next sentence would exceed the cap, then starts a new chunk. A heading path for page and section is prepended to each chunk before embedding.
 
 Source: Reddit
 Sentence-aware splitting, capped at 150-175 words per chunk, minimum 100 characters. While most comments fall within the cap naturally, longer comments, particularly structured replies covering multiple dorms, can exceed it. The splitter completes the current sentence before starting a new chunk, ensuring no opinion is cut mid-thought. The thread title, date, and score is prepended to every chunk before embedding, since comments do not carry their own topic signal. The minimum character count guards against short replies that contain no meaningful content such as "agreed" or "this."
@@ -66,7 +83,7 @@ None required between chunks. Sentence-aware splitting ensures clean boundaries.
 
 **Reasoning:**
 
-A hybrid approach is warranted because the three source types differ fundamentally in structure, authorial voice, and information density. A single chunk size would either fragment review content or under-split narrative prose. Sentence-aware splitting is applied uniformly across all three sources. The primary motivation is the 256 token limit of all-MiniLM-L6-v2, which silently truncates input beyond that threshold. A 150-175 word cap per chunk provides headroom for prepended metadata prefixes while staying within the model's limit. Splitting on sentence boundaries rather than raw character or word counts ensures no chunk ends mid-thought, preserving the integrity of each opinion or prose passage. Context like dorm name, star rating, heading path, or thread title must travel with the chunk as text to be semantically retrievable, not just filterable. Where a comment, review, or wiki section is split into multiple chunks, the prepended metadata prefix on each chunk preserves the topic context that a mid-content split would otherwise orphan. This makes the metadata prefix load-bearing for split chunks, not merely a convenience for single-chunk documents.
+A hybrid approach is warranted because the three source types differ fundamentally in structure, voice, and information density. A single chunk size would either fragment review content or under-split narrative prose. Therefore, sentence-aware splitting is applied uniformly across all three sources, with some caveats. All source material is relatively short in length, even the Guide To BU Wiki, however there are outliers in each source set. The embedding model used, `all-MiniLM-L6-v2`, has a 256 token limit, which silently truncates input beyond that threshold. The 150-175 word cap per chunk guards against this and provides headroom for prepended metadata prefixes while staying within the model's limit. Splitting on sentence boundaries rather than raw character or word counts ensures no chunk ends mid-thought, preserving the integrity of each opinion or prose passage. Context like dorm name, heading path, and thread title travels with the chunk as text to add semantic depth (helpful for short Reddit comments/reviews on RateMyDorm). Where a comment, review, or wiki section is split into multiple chunks, the prepended metadata prefix on each chunk preserves the topic context that a mid-content split might otherwise orphan. This makes the metadata prefix load-bearing for split chunks.
 
 ---
 
@@ -84,7 +101,7 @@ A lightweight sentence-transformers model that runs locally with no API key or r
 - Lower accuracy than larger models (e.g., OpenAI's `text-embedding-3-large`), but no cost and no latency from network calls.
 - Compressed representation of meaning, but narrow domain means core content meaning should be preserved.
 
-**Top-k: 8**
+**Top-k: 5**
 
 Given the diversity of document sources, it may be worth expanding to 8-10 if source diversity is limited.
 
@@ -93,7 +110,7 @@ Given the diversity of document sources, it may be worth expanding to 8-10 if so
 - Embedding quality: a larger model would likely handle semantic nuances of a review to review closely related but ultimately distinct embeddings.
 - Multilingual support: BU has a huge number of international students. Injesting feedback on student housing in different languages would add to the diversity of perspectives to the corpus.
 - Domain expertise: a model tuned to have a greater understanding of BU housing slang and abbreviations would make more useful embeddings.
-- Context length: I would consider opting for a model with a larger context window if I implemented conversation history. This could be a usefule feature as a student could reasonably wish to describe their needs and priorities and query the tool with that context maintained. This could get large as each retrieved chunk is included with the conversation history at each turn. I would also consider expanding top-k to ensure source diversity, which could fill up the context window pre-prompt.
+- Context length: I would consider opting for a model with a larger context window if I implemented conversation history. This could be a useful feature as a student could reasonably wish to describe their needs and priorities and query the tool with that context maintained. This could get large as each retrieved chunk is included with the conversation history at each turn. I would also consider expanding top-k to ensure source diversity, which could fill up the context window pre-prompt.
 - Re-ranking: For more accurate results, retrieve a higher top-k and then rerank results and only pass top 5 ranked results to the LLM.
 
 ---
@@ -107,7 +124,7 @@ Given the diversity of document sources, it may be worth expanding to 8-10 if so
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | How big are the beds in Warren Towers? | Twin XL bed (80 inches -- bring extra-long twin sheets) |
+| 1 | How big are the beds in Warren Towers? | Sources cite double or twin XL beds |
 | 2 | What are the room options for Stuvi2? | Stuvi2 offers single, double, and triple room configurations. |
 | 3 | What do students say about living in West campus and taking classes at CAS? | Students consistently say that the walk from West campus for classes in CAS is long and crowded. |
 | 4 | What's the guest policy at Stuvi2?  | The system should acknowledge that it doesn't have the information, as it's an official policy not present in these community docs. |
@@ -144,7 +161,7 @@ User query
     clean.py
     │
     ▼
-[2] CHUNK          ──► Sentance-aware splitting per source type.
+[2] CHUNK          ──► Sentence-aware splitting per source type.
     chunk.py           Metadata prepended to each chunk before embedding.
     │
     ▼

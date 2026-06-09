@@ -58,7 +58,7 @@ def generate_response(query: str, retrieved_chunks: list) -> tuple:
     # nothing to ground an answer in. Bail out before calling the LLM.
     if not retrieved_chunks:
         answer = (
-            "I couldn't find anything relevant in the loaded documents. "
+            "I couldn't find anything relevant in the available documents. "
             "Try rephrasing your question — or check that your ingestion pipeline is working."
         )
         return answer, ''
@@ -92,8 +92,7 @@ def generate_response(query: str, retrieved_chunks: list) -> tuple:
     if "couldn't find any relevant information" in answer:
         return answer, ''
 
-    # [5] Append the sources the answer was grounded in.
-    # return answer + "\n\n" + _construct_sources_cited(retrieved_chunks)
+    # Return sources string with response for app to display in sources window
     return answer, _construct_sources_cited(retrieved_chunks)
 
 

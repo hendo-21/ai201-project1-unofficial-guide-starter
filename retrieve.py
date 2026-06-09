@@ -85,7 +85,7 @@ def retrieve(query_texts: str, n_results: int = N_RESULTS, include=INCLUDE, thre
 
 
 def main():
-    query = "Can I get into Stuvi2 as a freshman?"
+    query = "How big are the beds in Warren Towers?"
     print(f"Query: {query}\n")
 
     results = retrieve(query)
