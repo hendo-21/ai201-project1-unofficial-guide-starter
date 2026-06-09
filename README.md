@@ -155,7 +155,7 @@ By including the source as metadata within the chunk text, the LLM is able to to
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
 | 1 | How big are the beds in Warren Towers? | Sources cite double or twin XL beds | Couldn't find relevant information | Off-target | Inaccurate | 
 | 2 | What are the room options for Stuvi2? | Stuvi2 offers single, double, and triple room configurations. | It offers spacious single, double, and triple rooms, and apartment-style living.| Partially relevant | Accurate |
-| 3 | What do students say about living in West campus and taking classes at CAS? | Students consistently say that the walk from West campus for classes in CAS is long and crowded. | Response identifies the walk time, transportation options, and that the distance to CAS can feel great. |  Partially relevant | Accurate |
+| 3 | What do students say about living in West campus and taking classes at CAS? | Students consistently say that the walk from West campus for classes in CAS is long and crowded. | Response identifies the walk time, transportation options, and that the distance to CAS can feel great. |  Relevant | Accurate |
 | 4 | What's the guest policy at Stuvi2?  | The system should acknowledge that it doesn't have the information, as it's an official policy not present in these community docs. | System acknowledges it can't find that information. | Relevant | Accurate |
 | 5 | What's the standout feature of living at Fenway? | Students consistently praise the quality of the dining hall, despite the distance to west campus. | Response calls out the dining hall specifically, and includes celebrated food options. It also surfaces other community benefits. | Relevant | Accurate |
 
