@@ -208,7 +208,8 @@ A lightweight sentence-transformers model that runs locally with no API key or r
 
 **Example 1:**
 * **User Query:** "What is planned for the Warren Towers renovation?"
-* **System Response:** "According to the Guide to BU, the Warren Towers renovation is a $550 million, multi-year project that will completely transform the building. The renovationtargets LEED Gold certification and aims to be net-zero greenhouse gas emissions. Specific changes include the addition of full air conditioning in all rooms and lounges, all-gender, single-user bathrooms, triple-glazed, operable windows, electronic card-entry locks, dimmable LED lighting, new furniture, entirely new plumbing, and improved insulation. The renovation will also address fire safety and accessibility, with a new sprinkler system, fire alarm, and ADA-compliant widened doors. The project is scheduled to be completed in phases, with Tower A reopening in Fall 2026, Tower B in Fall 2027, and Tower C in Fall 2028. Sources:
+* **System Response:** "According to the Guide to BU, the Warren Towers renovation is a $550 million, multi-year project that will completely transform the building. The renovationtargets LEED Gold certification and aims to be net-zero greenhouse gas emissions. Specific changes include the addition of full air conditioning in all rooms and lounges, all-gender, single-user bathrooms, triple-glazed, operable windows, electronic card-entry locks, dimmable LED lighting, new furniture, entirely new plumbing, and improved insulation. The renovation will also address fire safety and accessibility, with a new sprinkler system, fire alarm, and ADA-compliant widened doors. The project is scheduled to be completed in phases, with Tower A reopening in Fall 2026, Tower B in Fall 2027, and Tower C in Fall 2028.
+Sources:
 · Guide to BU | Warren Towers > The $550 Million Renovation: Everything Changes
 · Rate My Dorm | Warren Towers
 · Reddit | What dorm should I choose? : BostonU
@@ -216,7 +217,8 @@ A lightweight sentence-transformers model that runs locally with no API key or r
 
 **Example 2:**
 * **User Query:** "Which dorms are best for upperclassmen?"
-* **System Response:** "According to the Reddit thread 'best and worst dorms/suites to live in as a sophomore transfer?', students recommend Hojo or Bay State for upperclassmen. Reviews on RateMyDorm do not specifically mention upperclassmen preferences, but the Reddit thread suggests that Hojo has private bathrooms and is relatively close to CAS, making it a quiet and convenient option. Bay State is also mentioned as a desirable option, although it may be more difficult to get into. Students on Reddit note that Towers may also be an option, but it may have fewer social opportunities for freshmen, which could be a plus for upperclassmen looking for a quieter environment. Sources:
+* **System Response:** "According to the Reddit thread 'best and worst dorms/suites to live in as a sophomore transfer?', students recommend Hojo or Bay State for upperclassmen. Reviews on RateMyDorm do not specifically mention upperclassmen preferences, but the Reddit thread suggests that Hojo has private bathrooms and is relatively close to CAS, making it a quiet and convenient option. Bay State is also mentioned as a desirable option, although it may be more difficult to get into. Students on Reddit note that Towers may also be an option, but it may have fewer social opportunities for freshmen, which could be a plus for upperclassmen looking for a quieter environment.
+Sources:
 · Rate My Dorm | StuVi1 (10 Buick St)
 · Rate My Dorm | Kilachand Hall
 · Reddit | Best/worst dorms : BostonU
