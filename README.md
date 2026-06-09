@@ -226,6 +226,10 @@ A lightweight sentence-transformers model that runs locally with no API key or r
 · Reddit | Best Freshman dorms? : BostonU
 · Reddit | BU Housing Ranking?? : BostonU" 
 
+**Example system response for out-of-scope query**
+* **User Query:** "What's the official overnight guest policy for Stuvi2?"
+* **System Response:** "I couldn't find anything relevant in the available documents. Try rephrasing your question — or check that your ingestion pipeline is working."
+
 **System prompt grounding instruction:**
 
 Responses are grounded in two ways. First, deterministically by returning an error string if the retrieval function did not retrieve any relevant chunks (distance score > 0.6). Second, with specific instructions on how to attribute sources and handle chunks lacking relevant context. These are placed before and after the chunk context to ensure the LLM adhere to them. These are the prompts:
@@ -319,6 +323,38 @@ I think the second issue is a chunking issue. The source where this information 
 I would first try updating the `FINAL_CONSTRAINS_REMINDER` prompt to relax the constraints slightly. I would have to verify responses to other prompts to ensure that bad responses then start filtering through.
 
 For the second issue, I would chunk content from the Guide To BU Wiki more aggressively. I think chunking by section header was too lenient, despite the short length of the sections. Reviewing the sections more closely, they contain greater breadth of information than the Reddit or RateMyDorm posts. Rather than greedily add sentences to chunks of 150-175 words (8-10 sentences), I would reduce the word count to 50-75% of that value. I would carry the change over to Reddit and Rate My Dorm sources as well, which do not seem to exhibit the same issue, but I believe that's because long posts on those sources is more anomalous. 
+
+---
+
+## Interface Design & Sample Interaction
+
+### Interface Fields
+
+*   **Input Fields:**
+    *   **Your question (`gr.Textbox`)**: A text input box where users type their natural language questions.
+    *   **Ask (`gr.Button`)**: A trigger button to submit the question. Pressing `Enter` inside the input box also submits the query.
+*   **Output Fields:**
+    *   **Answer (`gr.Textbox`)**: An 8-line text area displaying the final generated response from the LLM.
+    *   **Retrieved from (`gr.Textbox`)**: A 4-line text area displaying the specific document sources and chunk metadata used to ground the answer.
+
+### Sample Interaction Transcript
+
+**User Question:** 
+> "Which dorms are best for meeting people and making friends?"
+
+**Answer:**
+> "According to the provided documents, students have mentioned that certain dorms are better for meeting people and making friends. Reviews on RateMyDorm suggest that StuVi2 has a "super social atmosphere", which could be beneficial for making friends. On Reddit, a student noted that Warren is one of the most social dorms, and that it's easier to make friends there, even though the dorms themselves are not the best. Another Reddit user mentioned that Warren, along with other communal dorms, are the most social and that everywhere else is "too quiet and hard to make friends". However, it's also mentioned that Brownstones and Hojo (575 Comm Ave) might not be the best options for freshmen looking to make friends, as they tend to have more upperclassmen and established friend groups."
+
+**Retrieved from:**
+> "Sources:
+· Rate My Dorm | Hojo (575 Comm Ave)
+· Reddit | Best/worst dorms : BostonU
+· Rate My Dorm | The Towers
+· Reddit | What dorm should I choose? : BostonU
+· Reddit | best and worst dorms/suites to live in as a sophomore transfer? : BostonU
+· Rate My Dorm | StuVi2 (33 Harry Agganis Way)
+· Reddit | BU Housing Ranking?? : BostonU
+· Rate My Dorm | 1019 Commonwealth Avenue"
 
 ---
 
