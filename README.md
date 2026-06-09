@@ -131,7 +131,6 @@ The system prompt is formatted as follows:
     | 1. Prompt Prefix                                            |
     +-------------------------------------------------------------+
     | 2. Retrieved Context Chunks                                 |
-    |    - Clearly labeled and separated with XML tags or markers |
     +-------------------------------------------------------------+
     | 3. Final Constraints Reminder                               |
     +-------------------------------------------------------------+
