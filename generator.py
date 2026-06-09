@@ -84,6 +84,7 @@ def generate_response(query: str, retrieved_chunks: list) -> tuple:
         # Low temperature keeps the answer close to the provided context
         # instead of inventing details.
         temperature=0.2,
+        max_completion_tokens=500
     )
     answer = (completion.choices[0].message.content or "").strip()
 
